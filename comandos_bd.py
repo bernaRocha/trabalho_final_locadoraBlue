@@ -1,13 +1,6 @@
 from mysql.connector import connect, Error
 
 
-# try:
-#     with connect(
-# host="localhost", user="root", password="root",) as connection:print(connection)
-# except Error as e:
-#     print(e)
-
-
 locadora = {
     "host": "localhost", "user": "root",
     "password": "root", "database": "locadora"}
@@ -41,8 +34,10 @@ def update(tabela, chave, valor_chave, colunas, valores):
 def select_like(tabela, chave, valor_chave):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s""", (valor_chave))
 
-#def select(tabela, chave, valor_chave=1, limit=100, offset=0):
-  #  return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (valor_chave,))
+def select(tabela, chave, valor_chave=1, limit=100, offset=0):
+    return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (valor_chave,))
                                                           # tirar dúvida aqui
 
 
+
+# tirar dúvidas neste arquivo
