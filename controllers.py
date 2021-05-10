@@ -1,14 +1,11 @@
 from flask import Flask, jsonify, request
-from comandos_bd import query, execute
+from comandos_bd import *
 from models import *
 from serializers import *
-from validacao import valida_diretor, valida_id
+from validacao import *
 
 
 app = Flask(__name__)
-
-# criar enviar dados com json e retornar como json
-
 
 @app.route("/diretores", methods=["POST"])
 def inserir_diretor():
@@ -20,7 +17,6 @@ def inserir_diretor():
     else:
         return jsonify({"Erro": "Diretor inválido"})
 
-# alterar diretor gênero filme usuário
 
 @app.route("/diretores/<int:id>", methods=["PUT"])
 def alterar_diretor(id):
@@ -32,11 +28,10 @@ def alterar_diretor(id):
     else:
         return jsonify({"Erro": "Diretor inválido"})
 
-# apagar diretor gênero filme usuário
-# exibir mensagem de erro  ############### # set foreign_key_checks=0;
+
 @app.route("/diretores/<int:id>", methods=["DELETE"])
 def apagar_diretor(id):
-    diretor_id = delete_id_from_web(**request.json)
+    diretor_id = delete_diretor(**request.json)
     try:
         if valida_id(**diretor_id):
             delete_diretor(**diretor_id)
@@ -66,19 +61,29 @@ def inserir_usuario():
     else:
         return jsonify({"Erro": "Usuário inválido"})
 
+@app.route("/users/<int:id>", methods=["PUT", "PATCH"])
+def update_users(id):
+    user = serializers.users_from_web(**request.json)
+    if valida_usuario(**user):
+        models.update_user(id, **user)
+        inserted_user = models.get_user(id)
+        return jsonify(serializers.users_from_db(inserted_user))
+    else:
+        return jsonify({"erro": "Usuário inválido"})
+
 @app.route("/usuarios", method=["GET"])
 def select_usuario():
-    nome_completo = nome_usuario_from_web(**request.args)
+    nome_completo = usuario_from_web(**request.args)
     usuarios = select_usuario(nome_completo)
     usuario_from_db = [usuario_from_db(usuarios) for usuario in usuarios]
+    return jsonify(usuario_from_db)
 
-# generos
 
 @app.route("/generos", methods=["GET"])
 def get_genero():
     genero = generos_from_web(**request.args)
     genero = get_genero(nome)
-    generos_from_bd = generos_from_db for nome in generos
+    generos_from_bd = [serializers.generos_from_db for nome in generos]
     return jsonify(generos_from_db)
 
 
@@ -88,7 +93,7 @@ def insert_genero():
     if valida_genero(**genero):
         id_genero = insert_genero(**genero)
         genero_inserido = get_genero(id)
-        return jsonify(genero_from_db(genero_inserido))
+        return jsonify(generos_from_db(genero_inserido))
     else:
         return jsonify({"Erro": "Gênero inválido"})
 
@@ -112,11 +117,5 @@ def delete_genero(id):
 
 
 
-
-
-
-
-
-
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='127.0.0.1', debug=True)

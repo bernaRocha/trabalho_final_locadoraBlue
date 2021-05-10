@@ -66,17 +66,16 @@ def select_filme(titulo, ano, classificacao, preco, diretores_id, generos_id):
            f"%{titulo, ano, classificacao, preco, diretores_id, generos_id}%")
     return titulo, ano, classificacao, preco, diretores_id, generos_id
 
+
 def get_filme(id):
     return select("filmes", "id", id)[0]
 
+def update_filme(id, titulo, ano, classificacao, preco, diretores_id, generos_id):
+    update("filmes", "id", id, ["titulo", "ano", "classificacao", "preco", "diretores_id", "generos_id"],
+           [titulo, ano, classificacao, preco, diretores_id, generos_id])
+
+
+def delete_filme(id):
+    delete("filmes", "id", id)
 
 # def update
-
-
-
-
-def update_filme():
-    update()
-
-def update_usuario():
-    update()
