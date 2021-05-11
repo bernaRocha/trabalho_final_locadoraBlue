@@ -36,7 +36,7 @@ def select_like(tabela, chave, valor_chave):
 
 def select(tabela, chave, valor_chave=1, limit=100, offset=0):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (valor_chave,))
-                                                          # tirar dúvida aqui
+
 
 
 

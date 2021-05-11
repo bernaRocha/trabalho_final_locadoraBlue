@@ -18,18 +18,19 @@ def delete_diretor(id):
     return delete("diretores", "id", id)
 
 def select_diretor(nome_completo):
-    select_like("diretores", "nome_completo", f"%{nome_completo}%")
+    return select_like("diretores", "nome_completo", f"%{nome_completo}%")
+
 
  # def para genero
 
 def insert_genero(id, nome):
-    insert("genero", ["id", "nome"], [id, nome])
+    return insert("genero", ["id", "nome"], [id, nome])
 
 def get_genero(id):
     return select("generos", "id", id)
 
 def update_genero(id, nome):
-    return update("generos", "id", id, "nome", [nome])
+    update("generos", "id", id, "nome", [nome])
 
 def delete_genero(id):
     delete("generos", "id", id)
@@ -52,7 +53,7 @@ def delete_usuario(id):
     return delete("usuarios", "id", id)
 
 def select_usuario(id, nome_completo):
-    select_like("usuarios", "nome_completo", f"%{nome_completo}%")
+    return select_like("usuarios", "nome_completo", f"%{nome_completo}%")
 
 #### def para filmes
 
