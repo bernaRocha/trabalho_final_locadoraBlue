@@ -3,9 +3,8 @@ from comandos_bd import *
 from models import *
 from serializers import *
 from validacao import *
-
-
 app = Flask(__name__)
+
 
 @app.route("/diretores", methods=["POST"])
 def inserir_diretor():
@@ -23,8 +22,8 @@ def alterar_diretor(id):
     diretor = diretores_from_web(**request.json)
     if valida_diretor(**diretor):
         update_diretor(id, **diretor)
-        #       diretor_alterado = get_diretores(id)
-        return jsonify(diretores_from_db(update_diretor))
+        diretor_alterado = get_diretores(id)
+        return jsonify(diretores_from_db(diretor_alterado))
     else:
         return jsonify({"Erro": "Diretor inválido"})
 
@@ -42,7 +41,7 @@ def apagar_diretor(id):
 
 @app.route("/diretores", methods=["GET"])
 def buscar_diretor():
-    diretor = diretores_from_web(**request.json)
+    diretor = diretores_from_web(**request.args)
     diretores_selecionado = select_diretor(**diretor)
     if len(diretores_selecionado) > 0:
         return jsonify(diretores_from_db(**diretores_selecionado))
@@ -82,7 +81,6 @@ def select_usuario():
 @app.route("/generos", methods=["GET"])
 def get_genero():
     genero = generos_from_web(**request.args)
-    genero = get_genero(nome)
     generos_from_bd = [serializers.generos_from_db for nome in generos]
     return jsonify(generos_from_db)
 
@@ -98,12 +96,12 @@ def insert_genero():
         return jsonify({"Erro": "Gênero inválido"})
 
 @app.route("/generos/<int:id>", methods=["PUT"])
-def udate_generos(id):
+def update_generos(id):
     genero = generos_from_web(**request.json)
     if valida_genero(**genero):
         update_genero(id, **genero)
-        genero_inserido = get_genero(id)
-        return jsonify(generos_from_db(genero_inserido))
+        genero_alterado = get_genero(id)
+        return jsonify(generos_from_db(genero_alterado))
     else:
         return jsonify({"Erro": "Gênero inválido"})
 
@@ -111,7 +109,7 @@ def udate_generos(id):
 def delete_genero(id):
     try:
         delete_genero(id)
-        return None, 204
+        return "", 204
     except:
         return jsonify({"Erro": "Gênero não encontrado"})
 

@@ -51,5 +51,6 @@ def generos_from_web(**kwargs):
 
 def generos_from_db(generos):
     return{
-        "nome_completo": generos["nome_completo"],
+        "id": generos["id"],
+        "nome": generos["nome"]
     }
