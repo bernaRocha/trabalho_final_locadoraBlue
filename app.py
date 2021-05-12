@@ -54,4 +54,3 @@ def usuarios():
     elif request.method == "DELETE":
         return jsonify(delete("nome_completo", "CPF", request.json["nome_completo"]))
 
-
